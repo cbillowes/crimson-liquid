@@ -14,26 +14,31 @@ namespace WordAnalysis.Core.Tests
             _calculator = new FrequentLengthCalculator();
         }
 
-        [Test]
-        public void Be_the_first_word_with_highest_occurrance()
+        public void Return_default_data_when_no_items_exist()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void Be_the_first_word_in_with_highest_occurrance_and_multiple_words_of_the_same_occurance()
+        public void Return_first_when_no_duplicates()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void Be_ordered_by_word_ascending()
+        public void Return_highest_with_duplicates()
         {
             throw new NotImplementedException();
         }
 
         [Test]
-        public void Be_ordered_regardless_of_case()
+        public void Return_highest_ordered_with_duplicates()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void Return_case_insensitive_order()
         {
             throw new NotImplementedException();
         }
