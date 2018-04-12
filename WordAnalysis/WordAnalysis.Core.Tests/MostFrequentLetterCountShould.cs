@@ -10,7 +10,7 @@ namespace WordAnalysis.Core.Tests
         [SetUp]
         public void SetUp()
         {
-            _calculator = new FrequentLengthCalculator();
+            _calculator = new FrequentLengthCalculator(limit: 7);
         }
 
         [Test]
@@ -25,9 +25,9 @@ namespace WordAnalysis.Core.Tests
         [Test]
         public void Return_first_when_no_duplicates()
         {
-            var words = new [] { "hotel", "india", "juliet", "kilo", "lima", "alpha" };
+            var words = new [] { "hotel", "india", "juliets", "kilo", "lima", "alpha" };
             var (word, total) = _calculator.Calculate(words);
-            Assert.That(word, Is.EqualTo("juliet"));
+            Assert.That(word, Is.EqualTo("juliets"));
             Assert.That(total, Is.EqualTo(1));
         }
 
@@ -43,28 +43,28 @@ namespace WordAnalysis.Core.Tests
         [Test]
         public void Return_highest_ordered_with_duplicates()
         {
-            var words = new [] { "hotel", "yankie", "yankie", "yankie", "yellow", "yellow", "yes", "hurry" };
+            var words = new [] { "hotel", "yankies", "yankies", "yankies", "yellows", "yellows", "yes", "hurry" };
             var (word, total) = _calculator.Calculate(words);
-            Assert.That(word, Is.EqualTo("yankie"));
+            Assert.That(word, Is.EqualTo("yankies"));
             Assert.That(total, Is.EqualTo(3));
         }
 
         [Test]
         public void Return_case_insensitive_order()
         {
-            var words = new [] { "Golf", "yo", "golF", "zulu", "GOLF", "gOlF", "golf" };
+            var words = new [] { "Golfers", "yoyo", "golFers", "zulu", "GOLFers", "gOlFers", "golfers" };
             var (word, total) = _calculator.Calculate(words);
-            Assert.That(word, Is.EqualTo("golf"));
+            Assert.That(word, Is.EqualTo("golfers"));
             Assert.That(total, Is.EqualTo(5));
         }
 
         [Test]
         public void Return_the_most_frequent_word()
         {
-            var words = new [] { "abc", "abc", "acd", "acd", "acd" };
+            var words = new [] { "yellows", "yellows", "yankies" };
             var (word, total) = _calculator.Calculate(words);
-            Assert.That(word, Is.EqualTo("acd"));
-            Assert.That(total, Is.EqualTo(3));
+            Assert.That(word, Is.EqualTo("yellows"));
+            Assert.That(total, Is.EqualTo(2));
         }
     }
 }

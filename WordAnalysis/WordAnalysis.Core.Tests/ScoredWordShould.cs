@@ -53,7 +53,7 @@ namespace WordAnalysis.Core.Tests
         {
             var words = new [] { "ZOOLANDER" };
             var (word, total) = _calculator.Calculate(words);
-            Assert.That(word, Is.EqualTo("ZOOLANDER"));
+            Assert.That(word, Is.EqualTo("zoolander"));
             Assert.That(total, Is.EqualTo(19));
         }
     }

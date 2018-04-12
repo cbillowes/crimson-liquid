@@ -10,12 +10,15 @@ namespace WordAnalysis.Core
             var listOfWords = words.ToList();
             if (!listOfWords.Any()) return (string.Empty, 0);
 
-            var selected = listOfWords.Select(w => new
+            var grouped = listOfWords.GroupBy(w => w.ToLower());
+            var selected = grouped.Select(w => new
             {
-                Word = w, 
-                Score = ScrabbleLetterMapper.Map(w)
+                Word = w.Key, 
+                Score = ScrabbleLetterMapper.Map(w.Key)
             });
-            var ordered = selected.OrderBy(w => w.Word);
+            var ordered = selected
+                .OrderByDescending(w => w.Score)
+                .ThenBy(w => w.Word);
             var highest = ordered.First();
             return (highest.Word, highest.Score);
         }

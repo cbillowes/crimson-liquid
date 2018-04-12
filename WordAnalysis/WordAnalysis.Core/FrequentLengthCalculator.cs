@@ -5,13 +5,21 @@ namespace WordAnalysis.Core
 {
     public class FrequentLengthCalculator : ICalculator
     {
+        private readonly int _limit;
+
+        public FrequentLengthCalculator(int limit)
+        {
+            _limit = limit;
+        }
+
         public (string word, int total) Calculate(IEnumerable<string> words)
         {
             var listOfWords = words.ToList();
             if (!listOfWords.Any()) return (string.Empty, 0);
             
             var grouped = listOfWords.GroupBy(w => w.ToLower());
-            var selected = grouped.Select(w => new
+            var filtered = grouped.Where(w => w.Key.Length == _limit);
+            var selected = filtered.Select(w => new
             {
                 Word = w.Key, 
                 Occurrance = w.Count(), 
