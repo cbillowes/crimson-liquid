@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using WordAnalysis.Core;
 using static System.Console;
 
@@ -10,51 +13,161 @@ namespace WordAnalysis.Console
     {
         static void Main(string[] args)
         {
-            var key = ConsoleKey.Y;
-            while (key != ConsoleKey.N)
+            var summary = new List<Summary>();
+            var input = new ConsoleKeyInfo();
+            while (input.Key != ConsoleKey.N)
             {
-                Clear();
-                Write("Open file from: ");
-                var path = ReadLine() ?? @"C:\workspace\resources\2600-0.txt";
-                WriteLine($"Reading from {path}");
-                if (!File.Exists(path))
+                Greeting();
+
+                var filepath = GetValidatedFilePath(args);
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                var words = ReadFile(filepath);
+                DisplayFrequentWord(words);
+                DisplayFrequentLetterWord(words);
+                DisplayHighestScoredWord(words);
+                Complete(summary, filepath, stopWatch.ElapsedMilliseconds);
+
+                stopWatch.Stop();
+                input = ReadKey();
+                
+                if (input.Key == ConsoleKey.N)
                 {
-                    throw new FileNotFoundException("Cannot read from a missing file.", path);
+                    DisplaySummary(summary);
                 }
-
-                var sw = new Stopwatch();
-                sw.Start();
-                long filesize = 0;
-                using (var fileStream = new FileStream(path, FileMode.Open))
-                {
-                    var cleaner = new LineCleaner();
-                    var list = new StreamWordListGenerator(fileStream, cleaner);
-                    var words = list.Generate();
-                    DisplayFrequent(words);
-                    DisplayLength(words);
-                    DisplayScore(words);
-                }
-                sw.Stop();
-
-                WriteLine();
-                ForegroundColor = ConsoleColor.Red;
-                Write("  >>  Execution took");
-                CustomWrite(sw.Elapsed.Seconds.ToString());
-                ForegroundColor = ConsoleColor.Red;
-                //How do you get the file size in C#?
-                //https://stackoverflow.com/questions/1380839/how-do-you-get-the-file-size-in-c
-                Write("seconds to run on " + (new FileInfo(path).Length / 1024) + "MB !");
-                WriteLine();
-                WriteLine();
-                ResetColor();
-
-                Write("We will continue until you [N]o longer want to play...");
-
-                key = ReadKey().Key;
             }
         }
 
-        static void CustomWrite(string word)
+        private static void DisplaySummary(List<Summary> summary)
+        {
+            Clear();
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine("Thank you for playing along!");
+            ForegroundColor = ConsoleColor.DarkGreen;
+            WriteLine("Here is this session's summary");
+            WriteLine();
+            ResetColor();
+
+            foreach (var item in summary)
+            {
+                WriteLine($"  >>  {item.File}: {item.FileSize:0.00} MB took {item.MilliSeconds}ms to process.");
+            }
+            
+            WriteLine();
+            WriteLine("Press any key to quit.");
+            ReadKey();
+        }
+
+        private static void Greeting()
+        {
+            Clear();
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine("Welcome to the Word Analysis game");
+            ForegroundColor = ConsoleColor.DarkGreen;
+            WriteLine("It's a game because somebody said so");
+            WriteLine();
+            ResetColor();
+        }
+
+        private static string[] ReadFile(string filepath)
+        {
+            WriteLine($"Reading from {filepath}...");
+            WriteLine();
+
+            using (var fileStream = new FileStream(filepath, FileMode.Open))
+            {
+                var cleaner = new LineCleaner();
+                var list = new StreamWordListGenerator(fileStream, cleaner);
+                var words = list.Generate();
+                return words;
+            }
+        }
+
+        private static void DisplayFrequentWord(string[] words)
+        {
+            var calculator = new FrequentWordCalculator();
+            (string word, int total) = calculator.Calculate(words);
+
+            Write("  >>  Most frequent word: ");
+            WriteHighlightedWord(word);
+            Write("ocurred");
+            WriteHighlightedWord(total.ToString());
+            WriteLine("times.");
+            WriteLine();
+        }
+
+        private static void DisplayFrequentLetterWord(string[] words)
+        {
+            const int numberOfCharacters = 7;
+            var calculator = new FrequentLengthCalculator(numberOfCharacters);
+            (string word, int total) = calculator.Calculate(words);
+
+            Write($"  >>  Most frequent {numberOfCharacters}-character word: ");
+            WriteHighlightedWord(word);
+            Write("ocurred");
+            WriteHighlightedWord(total.ToString());
+            WriteLine("times.");
+            WriteLine();
+        }
+
+        private static void DisplayHighestScoredWord(string[] words)
+        {
+            var calculator = new ScrabbleHighestScoreCalculator();
+            (string word, int total) = calculator.Calculate(words);
+
+            Write("  >>  Highest scoring words: ");
+            WriteHighlightedWord(word);
+            Write("with a score of");
+            WriteHighlightedWord(total.ToString());
+            WriteLine(".");
+            WriteLine();
+        }
+
+        private static void Complete(List<Summary> summaryList, string filepath, float elsapsedMilliseconds)
+        {
+            //How do you get the file size in C#?
+            //https://stackoverflow.com/questions/1380839/how-do-you-get-the-file-size-in-c
+            var fileSize = (float)new FileInfo(filepath).Length / 1024 / 1024;
+
+            Write("  >>  Execution took");
+            WriteHighlightedWord(elsapsedMilliseconds.ToString(CultureInfo.InvariantCulture));
+            Write("ms with a");
+
+            //Formatting a float to 2 decimal places
+            //https://stackoverflow.com/questions/6356351/formatting-a-float-to-2-decimal-places
+            WriteHighlightedWord(fileSize.ToString("0.00"));
+
+            WriteLine("MB file.");
+            WriteLine();
+            WriteLine("Press [N] to stop and any key to play again.");
+            
+            summaryList.Add(new Summary(filepath, fileSize, elsapsedMilliseconds));
+        }
+
+        private static void ValidateFilePath(string filepath)
+        {
+            if (!File.Exists(filepath))
+            {
+                throw new FileNotFoundException("Cannot read from a missing file.", filepath);
+            }
+        }
+
+        private static string GetValidatedFilePath(string[] args)
+        {
+            if (args.Length > 0)
+            {
+                return args[0];
+            }
+            Write("File location: ");
+            ForegroundColor = ConsoleColor.Green;
+            var path = ReadLine();
+            ValidateFilePath(path);
+            ResetColor();
+            return path;
+        }
+
+        private static void WriteHighlightedWord(string word)
         {
             Write(" ");
             ForegroundColor = ConsoleColor.Black;
@@ -62,45 +175,6 @@ namespace WordAnalysis.Console
             Write($"  {word}  ");
             ResetColor();
             Write(" ");
-        }
-
-        static void DisplayFrequent(string[] words)
-        {
-            WriteLine();
-            var calculator = new FrequentWordCalculator();
-            var result = calculator.Calculate(words);
-            Write("  >>  Most frequent word: ");
-            CustomWrite(result.word);
-            Write("ocurred");
-            CustomWrite(result.total.ToString());
-            Write("times.");
-            WriteLine();
-        }
-
-        static void DisplayLength(string[] words)
-        {
-            WriteLine();
-            var calculator = new FrequentLengthCalculator(limit: 7);
-            var result = calculator.Calculate(words);
-            Write("  >>  Most frequent 7-character word: ");
-            CustomWrite(result.word);
-            Write("ocurred");
-            CustomWrite(result.total.ToString());
-            Write("times.");
-            WriteLine();
-        }
-
-        static void DisplayScore(string[] words)
-        {
-            WriteLine();
-            var calculator = new ScrabbleHighestScoreCalculator();
-            var result = calculator.Calculate(words);
-            Write("  >>  Highest scoring words: ");
-            CustomWrite(result.word);
-            Write("with a score of");
-            CustomWrite(result.total.ToString());
-            Write(".");
-            WriteLine();
         }
     }
 }

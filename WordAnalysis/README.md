@@ -17,3 +17,10 @@ Using newer features in C#
 * String Interpolation  $"Hello {input}";
 
 ## Performance
+To improve performance I would follow these steps:
+
+* Ensure fast-executing tests - inspect clunky tests for potential bottlenecks
+* Inspect code analysis looking for obvious flaws like cyclomatic complexity
+* Look for expensive calls or executions and optimise them
+* Use tools like Resharper's Profile, Visual Studio's Performace Profiler, Visual Studio's Code analysis, SonarQube
+* I'll see what other people are using within my development space, in the community and online

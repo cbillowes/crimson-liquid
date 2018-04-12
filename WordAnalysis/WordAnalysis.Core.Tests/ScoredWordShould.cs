@@ -56,5 +56,14 @@ namespace WordAnalysis.Core.Tests
             Assert.That(word, Is.EqualTo("zoolander"));
             Assert.That(total, Is.EqualTo(19));
         }
+
+        [Test]
+        public void Ignore_hyphenated_words()
+        {
+            var words = new [] { "byte-by-byte", "strongly-typed", "culture-sensitive", "apple" };
+            var (word, total) = _calculator.Calculate(words);
+            Assert.That(word, Is.EqualTo("apple"));
+            Assert.That(total, Is.EqualTo(9));
+        }
     }
 }
