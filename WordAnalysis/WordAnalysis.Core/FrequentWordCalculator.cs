@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace WordAnalysis.Core
@@ -12,13 +11,18 @@ namespace WordAnalysis.Core
         //https://stackoverflow.com/questions/2318885/multiple-order-by-with-linq
         public (string word, int total) Calculate(IEnumerable<string> words)
         {
-            var ranked =  words
-                .GroupBy(w => w.ToLower())
-                .Select(w => new Tuple<string, int>(w.Key, w.Count()))
-                .OrderByDescending(w => w.Item2)
-                .ThenBy(w => w.Item1.ToLower())
-                .FirstOrDefault() ?? new Tuple<string, int>(string.Empty, 0);
-            return (ranked.Item1, ranked.Item2);
+            var listOfWords = words.ToList();
+            if (!listOfWords.Any()) return (string.Empty, 0);
+
+            var grouped = listOfWords.GroupBy(w => w.ToLower());
+            var selected = grouped.Select(w => new
+            {
+                Word = w.Key, 
+                Occurrance = w.Count(), 
+            });
+            var ordered = selected.OrderByDescending(w => w.Occurrance).ThenBy(w => w.Word);
+            var frequent = ordered.First();
+            return (frequent.Word, frequent.Occurrance);
         }
     }
 }

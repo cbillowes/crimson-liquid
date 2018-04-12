@@ -48,6 +48,7 @@
     <Compile Include="ScrabbleHighestScoreCalculator.cs" />
     <Compile Include="FrequentWordCalculator.cs" />
     <Compile Include="FrequentLengthCalculator.cs" />
+    <Compile Include="ScrabbleLetterMapper.cs" />
     <Compile Include="StreamWordListGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
