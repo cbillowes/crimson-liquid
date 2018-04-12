@@ -2,7 +2,7 @@
 
 namespace WordAnalysis.Core
 {
-    public class ScrabbleScoredCalculator: ICalculator
+    public class FrequentWordCalculator: ICalculator
     {
         public (string word, int total) Calculate(IEnumerable<string> words)
         {

@@ -49,7 +49,6 @@
     <Compile Include="MostFrequentWordShould.cs" />
     <Compile Include="MostFrequentLetterCountShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadingContentShould.cs" />
     <Compile Include="ScoredWordShould.cs" />
   </ItemGroup>
   <ItemGroup>

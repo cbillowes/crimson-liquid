@@ -2,6 +2,6 @@
 {
     public interface ICleaner
     {
-        string Clean(string text);
+        string[] Clean(string text);
     }
 }

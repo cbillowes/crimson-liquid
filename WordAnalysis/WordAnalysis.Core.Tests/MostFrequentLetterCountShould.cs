@@ -6,6 +6,14 @@ namespace WordAnalysis.Core.Tests
     [TestFixture]
     public class MostFrequentLetterCountShould: IMostFrequentTest
     {
+        private ICalculator _calculator;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _calculator = new FrequentLengthCalculator();
+        }
+
         [Test]
         public void Be_the_first_word_with_highest_occurrance()
         {

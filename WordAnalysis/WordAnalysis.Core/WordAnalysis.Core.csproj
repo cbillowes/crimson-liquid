@@ -45,10 +45,10 @@
     <Compile Include="IListGenerator.cs" />
     <Compile Include="LineCleaner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScrabbleScoredCalculator.cs" />
-    <Compile Include="WordOccurranceCalculator.cs" />
-    <Compile Include="WordLengthCalculator.cs" />
-    <Compile Include="WordListGenerator.cs" />
+    <Compile Include="ScrabbleHighestScoreCalculator.cs" />
+    <Compile Include="FrequentWordCalculator.cs" />
+    <Compile Include="FrequentLengthCalculator.cs" />
+    <Compile Include="StreamWordListGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
