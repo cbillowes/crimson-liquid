@@ -16,21 +16,22 @@ namespace WordAnalysis.Core
         {
             var listOfWords = words.ToList();
             if (!listOfWords.Any()) return (string.Empty, 0);
-            
-            var grouped = listOfWords.GroupBy(w => w.ToLower());
-            var filtered = grouped.Where(w => w.Key.Length == _limit);
-            var selected = filtered.Select(w => new
-            {
-                Word = w.Key, 
-                Occurrance = w.Count(), 
-                w.Key.Length,
-            });
-            var ordered = selected
-                .OrderByDescending(w => w.Length)
+
+            var frequent = listOfWords
+                .GroupBy(w => w.ToLower())
+                .Where(w => w.Key.Length == _limit)
+                .Select(w => new
+                {
+                    Word = w.Key, 
+                    Occurrance = w.Count(), 
+                    w.Key.Length,
+                })
+                .OrderByDescending(w => w.Occurrance)
                 .ThenByDescending(w => w.Occurrance)
-                .ThenBy(w => w.Word);
-            var frequent = ordered.First();
-            return (frequent.Word, frequent.Occurrance);
+                .ThenBy(w => w.Word)
+                .FirstOrDefault();
+            
+            return (frequent?.Word, frequent?.Occurrance ?? 0);
         }
     }
 }

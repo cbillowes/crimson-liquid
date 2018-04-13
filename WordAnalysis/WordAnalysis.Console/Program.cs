@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using WordAnalysis.Core;
 using static System.Console;
 
@@ -31,7 +30,7 @@ namespace WordAnalysis.Console
 
                 stopWatch.Stop();
                 input = ReadKey();
-                
+
                 if (input.Key == ConsoleKey.N)
                 {
                     DisplaySummary(summary);
@@ -53,7 +52,7 @@ namespace WordAnalysis.Console
             {
                 WriteLine($"  >>  {item.File}: {item.FileSize:0.00} MB took {item.MilliSeconds}ms to process.");
             }
-            
+
             WriteLine();
             WriteLine("Press any key to quit.");
             ReadKey();
@@ -72,7 +71,7 @@ namespace WordAnalysis.Console
 
         private static string[] ReadFile(string filepath)
         {
-            WriteLine($"Reading from {filepath}...");
+            WriteLine($"Reading from file. Please wait ....");
             WriteLine();
 
             using (var fileStream = new FileStream(filepath, FileMode.Open))
@@ -104,11 +103,20 @@ namespace WordAnalysis.Console
             (string word, int total) = calculator.Calculate(words);
 
             Write($"  >>  Most frequent {numberOfCharacters}-character word: ");
-            WriteHighlightedWord(word);
-            Write("ocurred");
-            WriteHighlightedWord(total.ToString());
-            WriteLine("times.");
-            WriteLine();
+            if (total == 0)
+            {
+                WriteHighlightedWord("None found");
+                WriteLine(".");
+                WriteLine();
+            }
+            else
+            {
+                WriteHighlightedWord(word);
+                Write("ocurred");
+                WriteHighlightedWord(total.ToString());
+                WriteLine("times.");
+                WriteLine();
+            }
         }
 
         private static void DisplayHighestScoredWord(string[] words)
@@ -141,7 +149,7 @@ namespace WordAnalysis.Console
             WriteLine("MB file.");
             WriteLine();
             WriteLine("Press [N] to stop and any key to play again.");
-            
+
             summaryList.Add(new Summary(filepath, fileSize, elsapsedMilliseconds));
         }
 

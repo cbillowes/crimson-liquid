@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 
 namespace WordAnalysis.Core
 {
@@ -11,21 +10,19 @@ namespace WordAnalysis.Core
             var listOfWords = words.ToList();
             if (!listOfWords.Any()) return (string.Empty, 0);
 
-            var scoredWords =
-                from word in listOfWords
-                where !word.Contains("-")
-                group word by word.ToLower() into lowered
-                orderby lowered.Key
-                select new
+            var highest = listOfWords
+                .Distinct()
+                .Where(w => !w.Contains("-"))
+                .GroupBy(w => w.ToLower())
+                .Select(w => new
                 {
-                    Word = lowered.Key,
-                    Score = ScrabbleLetterMapper.Map(lowered.Key)
-                };
-            
-            var highest = scoredWords
+                    Word = w.Key, 
+                    Score = ScrabbleLetterMapper.Map(w.Key),
+                })
                 .OrderByDescending(w => w.Score)
+                .ThenBy(w => w.Word)
                 .First();
-
+            
             return (highest.Word, highest.Score);
         }
     }

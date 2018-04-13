@@ -2,7 +2,7 @@
 
 namespace WordAnalysis.Core.Tests
 {
-    public class ScoredWordShould
+    public class ScrabbleScoredWordShould
     {
         private ICalculator _calculator;
 

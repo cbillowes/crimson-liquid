@@ -14,14 +14,17 @@ namespace WordAnalysis.Core
             var listOfWords = words.ToList();
             if (!listOfWords.Any()) return (string.Empty, 0);
 
-            var grouped = listOfWords.GroupBy(w => w.ToLower());
-            var selected = grouped.Select(w => new
-            {
-                Word = w.Key, 
-                Occurrance = w.Count(), 
-            });
-            var ordered = selected.OrderByDescending(w => w.Occurrance).ThenBy(w => w.Word);
-            var frequent = ordered.First();
+            var frequent = listOfWords
+                .GroupBy(w => w.ToLower())
+                .Select(w => new
+                {
+                    Word = w.Key, 
+                    Occurrance = w.Count(), 
+                })
+                .OrderByDescending(w => w.Occurrance)
+                .ThenBy(w => w.Word)
+                .First();
+
             return (frequent.Word, frequent.Occurrance);
         }
     }

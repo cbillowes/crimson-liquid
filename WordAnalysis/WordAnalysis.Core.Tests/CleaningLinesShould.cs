@@ -96,5 +96,21 @@ namespace WordAnalysis.Core.Tests
                 "there",
             }));
         }
+
+        [Test]
+        public void Remove_url()
+        {
+            const string text = "Check out the http://www.marvel.com website";
+            var actual = _cleaner.Clean(text);
+            Assert.That(actual, Is.EqualTo(new [] { "Check", "out", "the", "website" }));
+        }
+
+        [Test]
+        public void Remove_email()
+        {
+            const string text = "Email me at deadpool@marvel.com soon";
+            var actual = _cleaner.Clean(text);
+            Assert.That(actual, Is.EqualTo(new [] { "Email", "me", "at", "soon" }));
+        }
     }
 }

@@ -49,7 +49,7 @@
     <Compile Include="MostFrequentWordShould.cs" />
     <Compile Include="MostFrequentLetterCountShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScoredWordShould.cs" />
+    <Compile Include="ScrabbleScoredWordShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
