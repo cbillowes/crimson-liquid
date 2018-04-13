@@ -13,17 +13,17 @@ The Console application is the starting point for the user
 
 Original output:
 
-  >>  0,14 MB took 263ms to process.
-  >>  3,20 MB took 3082ms to process.
-  >>  6,10 MB took 4593ms to process.
-  >>  11,62 MB took 11072ms to process.
+  * 0,14 MB took 263ms to process.
+  * 3,20 MB took 3082ms to process.
+  * 6,10 MB took 4593ms to process.
+  * 11,62 MB took 11072ms to process.
 
 Optimized output:
 
-  >>  0,14 MB took 88ms to process.
-  >>  3,20 MB took 1601ms to process.
-  >>  6,10 MB took 1301ms to process.
-  >>  11,62 MB took 5333ms to process.
+  * 0,14 MB took 88ms to process.
+  * 3,20 MB took 1601ms to process.
+  * 6,10 MB took 1301ms to process.
+  * 11,62 MB took 5333ms to process.
 
 To further improve performance I would follow these steps:
 
