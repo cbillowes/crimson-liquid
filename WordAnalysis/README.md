@@ -4,6 +4,10 @@ The Core library contains the logic to find frequent words and calculate Scrabbl
 The Tests are only available for the Core library
 The Console application is the starting point for the user
 
+![Screenshot of analysis console](/Screenshots/word-analysis-console.png)
+
+![Screenshot of analysis summary](/Screenshots/word-analysis-summary.png)
+
 ## Performance
 
 * I process the file line by line cleaning up as I go along
