@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordFunneller.Core", "WordF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordFunneller.Console", "WordFunneller.Console\WordFunneller.Console.csproj", "{E931D23B-6D76-4CE1-A6C8-C4E488EF8AAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordFunneller.Core.Tests", "WordFunneller.Core.Tests\WordFunneller.Core.Tests.csproj", "{A1BBD7C8-47D8-44D1-9F97-6674CEDF50B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordFunneller.Core.Tests", "WordFunneller.Core.Tests\WordFunneller.Core.Tests.csproj", "{A1BBD7C8-47D8-44D1-9F97-6674CEDF50B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{12130DAA-636A-461B-9BAC-E787B069BDC6}"
+	ProjectSection(SolutionItems) = preProject
+		REAMDE.md = REAMDE.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
