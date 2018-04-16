@@ -10,11 +10,10 @@ namespace WordAnalysis.Core
         //https://regex101.com/
         public string[] Clean(string text)
         {
-            var regex = new Regex(@"[^a-zA-ZÀ-ÿ-’' ](http:\/\/\w*\.\w*.\w*)*(\w*@\w*.\w*)*");
-            var split = text
-                .Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(w => !regex.IsMatch(w));
-            return split.ToArray();
+            var regex = new Regex(@"(\w*@\w*.\w*)*(http:\/\/w*\.w*.\w*.\w*)*[^a-zA-ZÀ-ÿ-’']");
+            var words = regex.Replace(text, " ");
+            var cleaned = words.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            return cleaned;
         }
     }
 }
